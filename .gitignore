@@ -1,0 +1,26 @@
+bin/
+obj/
+.vs/
+
+# Editor settings
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Local database files
+*.db
+*.db-shm
+*.db-wal
+
+# Test and coverage output
+TestResults/
+coverage/
+coverage*.xml
+
+# Local logs
+*.log
+
+# macOS Finder metadata
+.DS_Store
