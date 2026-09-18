@@ -1,0 +1,81 @@
+@{
+    var activeNav = ViewData["Nav"] as string ?? "";
+    var pageTitle = ViewData["Title"] as string ?? "BusVerhuur Pro";
+}
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@pageTitle - BusVerhuur Pro</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <a class="brand" asp-area="" asp-page="/Index">
+                <span class="brand-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 16V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9" stroke="white" stroke-width="2" stroke-linecap="round"/><rect x="4" y="12" width="16" height="6" rx="1.5" stroke="white" stroke-width="2"/><circle cx="8" cy="19" r="1.5" fill="white"/><circle cx="16" cy="19" r="1.5" fill="white"/></svg>
+                </span>
+                <span class="brand-name">BusVerhuur Pro</span>
+            </a>
+
+            <nav class="nav">
+                <a class="nav-item @(activeNav == "Dashboard" ? "active" : "")" asp-page="/Index">
+                    <span class="nav-icon">▦</span> Dashboard
+                </a>
+                <a class="nav-item @(activeNav == "Reservations" ? "active" : "")" asp-page="/Reservations/Index">
+                    <span class="nav-icon">🗓</span> Reserveringen
+                </a>
+                <a class="nav-item @(activeNav == "Vehicles" ? "active" : "")" asp-page="/Vehicles/Index">
+                    <span class="nav-icon">🚌</span> Voertuigen
+                </a>
+                <a class="nav-item @(activeNav == "Customers" ? "active" : "")" asp-page="/Customers/Index">
+                    <span class="nav-icon">👤</span> Klanten
+                </a>
+                <a class="nav-item @(activeNav == "Invoices" ? "active" : "")" asp-page="/Invoices/Index">
+                    <span class="nav-icon">📄</span> Facturatie
+                </a>
+                <a class="nav-item @(activeNav == "Settings" ? "active" : "")" asp-page="/Settings/Index">
+                    <span class="nav-icon">⚙</span> Instellingen
+                </a>
+            </nav>
+
+            <div class="sidebar-user">
+                <img class="avatar" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=100&q=80" alt="Admin" />
+                <div>
+                    <div class="user-name">Admin</div>
+                    <div class="user-role">Transport Manager</div>
+                </div>
+            </div>
+        </aside>
+
+        <div class="main-area">
+            <header class="topbar">
+                <h1 class="page-title">@pageTitle</h1>
+                <div class="topbar-right">
+                    <div class="search-box">
+                        <span class="search-icon">🔍</span>
+                        <input type="search" placeholder="Zoeken op nummer, klant..." />
+                    </div>
+                    <button class="icon-button" type="button" aria-label="Meldingen">
+                        🔔
+                        <span class="notification-dot"></span>
+                    </button>
+                    <div class="topbar-user">
+                        <div class="topbar-user-text">
+                            <div class="user-name">Admin</div>
+                            <div class="user-role">Hoofdkantoor NL</div>
+                        </div>
+                        <img class="avatar" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=100&q=80" alt="Admin" />
+                    </div>
+                </div>
+            </header>
+
+            <main class="page-content">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+</body>
+</html>

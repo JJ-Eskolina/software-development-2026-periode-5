@@ -1,17 +1,92 @@
 @page
 @model jj_eskolina_silver_enigma.Pages.IndexModel
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Busverhuur</title>
-    <link rel="stylesheet" href="~/css/site.css" />
-</head>
-<body>
-    <main>
-        <h1>Busverhuur</h1>
-        <p>Hier bouw ik mijn website.</p>
-    </main>
-</body>
-</html>
+@{
+    ViewData["Title"] = "Dashboard";
+    ViewData["Nav"] = "Dashboard";
+}
+
+<div class="page-header">
+    <div>
+        <h2 class="section-title">Welkom terug, Admin</h2>
+        <p class="section-subtitle">Hier is een overzicht van je wagenpark en reserveringen.</p>
+    </div>
+    <a class="btn btn-primary" asp-page="/Reservations/Index">Bekijk reserveringen</a>
+</div>
+
+<div class="stat-grid">
+    <div class="stat-card">
+        <div class="stat-card-top">
+            <span class="stat-label">Totaal Voertuigen</span>
+            <span class="stat-icon">🚌</span>
+        </div>
+        <div class="stat-value">@Model.VehicleCount</div>
+        <div class="stat-change positive">+2 deze maand</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-top">
+            <span class="stat-label">Actieve Reserveringen</span>
+            <span class="stat-icon">▶</span>
+        </div>
+        <div class="stat-value">@Model.ActiveReservations</div>
+        <div class="stat-change positive">+4.3%</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-top">
+            <span class="stat-label">Openstaande Betalingen</span>
+            <span class="stat-icon">💳</span>
+        </div>
+        <div class="stat-value">€@Model.OutstandingPayments.ToString("N0")</div>
+        <div class="stat-change negative">-12.4%</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-top">
+            <span class="stat-label">Voertuigen In Onderhoud</span>
+            <span class="stat-icon">🛠</span>
+        </div>
+        <div class="stat-value">@Model.VehiclesInMaintenance</div>
+        <div class="stat-change">Stabiel</div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3>Recente reserveringen</h3>
+        <a class="link" asp-page="/Reservations/Index">Alles bekijken →</a>
+    </div>
+    <div class="table-wrapper">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Reserveringsnr</th>
+                    <th>Klant</th>
+                    <th>Voertuig</th>
+                    <th>Periode</th>
+                    <th>Status</th>
+                    <th>Betaald</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var reservation in Model.RecentReservations)
+                {
+                    <tr>
+                        <td><a class="link" asp-page="/Reservations/Details" asp-route-id="@reservation.Id">@reservation.ReservationNumber</a></td>
+                        <td>@reservation.CustomerName</td>
+                        <td>@reservation.VehicleName</td>
+                        <td>@reservation.StartDate – @reservation.EndDate</td>
+                        <td><span class="badge @StatusHelper.CssClass(reservation.Status)">@reservation.Status</span></td>
+                        <td>
+                            @if (reservation.IsPaid)
+                            {
+                                <span class="paid-yes">✓ Betaald</span>
+                            }
+                            else
+                            {
+                                <span class="paid-no">Openstaand</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
