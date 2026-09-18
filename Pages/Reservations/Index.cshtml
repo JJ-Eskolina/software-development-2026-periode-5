@@ -1,0 +1,106 @@
+@page
+@model jj_eskolina_silver_enigma.Pages.Reservations.IndexModel
+@{
+    ViewData["Title"] = "Reserveringen";
+    ViewData["Nav"] = "Reservations";
+}
+
+<div class="stat-grid stat-grid-4">
+    <div class="stat-card">
+        <div class="stat-card-top">
+            <span class="stat-label">Totaal Reserveringen</span>
+            <span class="stat-icon">📄</span>
+        </div>
+        <div class="stat-value">@Model.Total</div>
+        <div class="stat-change positive">+8.2%</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-top">
+            <span class="stat-label">Actief</span>
+            <span class="stat-icon">▶</span>
+        </div>
+        <div class="stat-value">@Model.Active</div>
+        <div class="stat-change positive">+4.3%</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-top">
+            <span class="stat-label">Komende Week</span>
+            <span class="stat-icon">📅</span>
+        </div>
+        <div class="stat-value">@Model.UpcomingWeek</div>
+        <div class="stat-change">Stabiel</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-top">
+            <span class="stat-label">Openstaande Betalingen</span>
+            <span class="stat-icon">💳</span>
+        </div>
+        <div class="stat-value">€@Model.OutstandingPayments.ToString("N0")</div>
+        <div class="stat-change negative">-12.4%</div>
+    </div>
+</div>
+
+<div class="filter-row">
+    <select class="filter-select">
+        <option>Status: Alle</option>
+        <option>Bevestigd</option>
+        <option>In Behandeling</option>
+        <option>Afgerond</option>
+        <option>Geannuleerd</option>
+    </select>
+    <select class="filter-select">
+        <option>Datum bereik</option>
+        <option>Deze week</option>
+        <option>Deze maand</option>
+    </select>
+    <div class="search-box filter-search">
+        <span class="search-icon">🔍</span>
+        <input type="search" placeholder="Klant of bus zoeken..." />
+    </div>
+</div>
+
+<div class="card no-pad">
+    <div class="table-wrapper">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Reserveringsnr</th>
+                    <th>Klant</th>
+                    <th>Voertuig</th>
+                    <th>Startdatum</th>
+                    <th>Einddatum</th>
+                    <th>Status</th>
+                    <th>Betaald</th>
+                    <th>Acties</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var reservation in Model.Reservations)
+                {
+                    <tr>
+                        <td><a class="link" asp-page="Details" asp-route-id="@reservation.Id">@reservation.ReservationNumber</a></td>
+                        <td>@reservation.CustomerName</td>
+                        <td>@reservation.VehicleName</td>
+                        <td>@reservation.StartDate</td>
+                        <td>@reservation.EndDate</td>
+                        <td><span class="badge @StatusHelper.CssClass(reservation.Status)">@reservation.Status</span></td>
+                        <td>
+                            @if (reservation.IsPaid)
+                            {
+                                <span class="paid-yes">✓ Betaald</span>
+                            }
+                            else
+                            {
+                                <span class="paid-no">Openstaand</span>
+                            }
+                        </td>
+                        <td class="actions-cell">
+                            <a class="btn btn-outline btn-sm" asp-page="Details" asp-route-id="@reservation.Id">Bekijken</a>
+                            <a class="btn btn-primary btn-sm" asp-page="Details" asp-route-id="@reservation.Id">Bewerken</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

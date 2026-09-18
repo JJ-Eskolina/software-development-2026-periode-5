@@ -1,0 +1,83 @@
+@page "{id:int}"
+@model jj_eskolina_silver_enigma.Pages.Reservations.DetailsModel
+@{
+    ViewData["Title"] = "Reservering Detail";
+    ViewData["Nav"] = "Reservations";
+}
+
+<nav class="breadcrumb">
+    <a asp-page="Index">Reserveringen</a> <span>&gt;</span> <strong>@Model.Reservation.ReservationNumber</strong>
+</nav>
+
+<div class="edit-grid">
+    <div class="card">
+        <h3 class="card-title">Reserveringsgegevens</h3>
+        <div class="detail-rows bordered">
+            <div class="detail-row"><dt>Reserveringsnummer</dt><dd>@Model.Reservation.ReservationNumber</dd></div>
+            <div class="detail-row"><dt>Klant naam</dt><dd>@Model.Reservation.CustomerName</dd></div>
+            <div class="detail-row"><dt>Telefoon</dt><dd>@Model.Reservation.CustomerPhone</dd></div>
+            <div class="detail-row"><dt>E-mail</dt><dd>@Model.Reservation.CustomerEmail</dd></div>
+            <div class="detail-row"><dt>Voertuig</dt><dd>@Model.Reservation.VehicleName (@Model.Reservation.VehicleType)</dd></div>
+            <div class="detail-row"><dt>Startdatum</dt><dd>@Model.Reservation.StartDate</dd></div>
+            <div class="detail-row"><dt>Einddatum</dt><dd>@Model.Reservation.EndDate</dd></div>
+            <div class="detail-row"><dt>Ophaalpunt</dt><dd>@Model.Reservation.PickupLocation</dd></div>
+            <div class="detail-row"><dt>Bestemming</dt><dd>@Model.Reservation.Destination</dd></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3 class="card-title">Status &amp; Kilometerstand</h3>
+
+        <div class="form-field">
+            <label>Status Reservering</label>
+            <select>
+                <option selected="@(Model.Reservation.Status == "Bevestigd")">Bevestigd</option>
+                <option selected="@(Model.Reservation.Status == "In Behandeling")">In Behandeling</option>
+                <option selected="@(Model.Reservation.Status == "Afgerond")">Afgerond</option>
+                <option selected="@(Model.Reservation.Status == "Geannuleerd")">Geannuleerd</option>
+            </select>
+        </div>
+
+        <div class="form-field">
+            <label>Betaalstatus</label>
+            <div class="toggle-group">
+                <button type="button" class="toggle-btn @(Model.Reservation.IsPaid ? "active" : "")">Betaald</button>
+                <button type="button" class="toggle-btn @(!Model.Reservation.IsPaid ? "active" : "")">Onbetaald</button>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.Reservation.PaymentMethod))
+        {
+            <div class="form-field">
+                <label>Betaalmethode</label>
+                <div class="static-value">@Model.Reservation.PaymentMethod</div>
+            </div>
+        }
+
+        <div class="form-grid">
+            <div class="form-field">
+                <label>Begin KM</label>
+                <input type="text" value="@Model.Reservation.StartMileage.ToString("N0") km" />
+            </div>
+            <div class="form-field">
+                <label>Eind KM</label>
+                <input type="text" placeholder="Voer eindstand in" value="@(Model.Reservation.EndMileage?.ToString("N0"))" />
+            </div>
+        </div>
+
+        @if (Model.Reservation.EstimatedDistance > 0)
+        {
+            <div class="detail-row"><dt>Geschatte afstand</dt><dd>@Model.Reservation.EstimatedDistance km</dd></div>
+        }
+    </div>
+</div>
+
+<div class="card">
+    <h3 class="card-title">Opmerkingen &amp; Notities</h3>
+    <textarea class="notes-area" rows="3">@Model.Reservation.Notes</textarea>
+</div>
+
+<div class="form-actions">
+    <a class="btn btn-outline" asp-page="Index">Annuleren</a>
+    <button class="btn btn-primary" type="button">Opslaan Wijzigingen</button>
+</div>

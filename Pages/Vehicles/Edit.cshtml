@@ -1,0 +1,111 @@
+@page "{id:int}"
+@model jj_eskolina_silver_enigma.Pages.Vehicles.EditModel
+@{
+    ViewData["Title"] = "Voertuig Bewerken";
+    ViewData["Nav"] = "Vehicles";
+}
+
+<nav class="breadcrumb">
+    <a asp-page="Index">Voertuigen</a> <span>&gt;</span> <span>@Model.Vehicle.Name</span> <span>&gt;</span> <strong>Bewerken</strong>
+</nav>
+
+<div class="edit-grid">
+    <div class="card">
+        <h3 class="card-title">Voertuig Afbeeldingen</h3>
+        <img class="vehicle-preview" src="@Model.Vehicle.ImageUrl" alt="@Model.Vehicle.Name" />
+        <button class="btn btn-outline btn-block" type="button">⬆ Afbeelding Wijzigen</button>
+
+        <h4 class="gallery-title">Foto Gallerij</h4>
+        <div class="gallery-row">
+            @foreach (var image in Model.Vehicle.GalleryImages)
+            {
+                <img class="gallery-thumb" src="@image" alt="Galerij foto" />
+            }
+        </div>
+    </div>
+
+    <div class="card">
+        <h3 class="card-title">Voertuiggegevens</h3>
+        <div class="form-grid">
+            <div class="form-field">
+                <label>Voertuignaam</label>
+                <input type="text" value="@Model.Vehicle.Name" />
+            </div>
+            <div class="form-field">
+                <label>Kenteken</label>
+                <input type="text" value="@Model.Vehicle.LicensePlate" />
+            </div>
+            <div class="form-field">
+                <label>Type</label>
+                <select>
+                    <option selected="@(Model.Vehicle.Type == "Minibus")">Minibus</option>
+                    <option selected="@(Model.Vehicle.Type == "Stadsbus")">Stadsbus</option>
+                    <option selected="@(Model.Vehicle.Type == "Touringcar")">Touringcar</option>
+                </select>
+            </div>
+            <div class="form-field">
+                <label>Bouwjaar</label>
+                <input type="text" value="@Model.Vehicle.Year" />
+            </div>
+            <div class="form-field">
+                <label>Aantal Zitplaatsen</label>
+                <input type="text" value="@Model.Vehicle.Seats" />
+            </div>
+            <div class="form-field">
+                <label>Brandstoftype</label>
+                <select>
+                    <option selected="@(Model.Vehicle.FuelType == "Diesel")">Diesel</option>
+                    <option selected="@(Model.Vehicle.FuelType == "Elektrisch")">Elektrisch</option>
+                    <option selected="@(Model.Vehicle.FuelType == "Hybride")">Hybride</option>
+                </select>
+            </div>
+            <div class="form-field">
+                <label>Huidige KM Stand</label>
+                <input type="text" value="@Model.Vehicle.Mileage.ToString("N0") km" />
+            </div>
+            <div class="form-field">
+                <label>Laatste APK Datum</label>
+                <input type="text" value="@Model.Vehicle.LastInspection" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3>Schade Registratie</h3>
+        <button class="btn btn-danger-outline" type="button">+ Schade Melden</button>
+    </div>
+    <div class="table-wrapper">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Datum</th>
+                    <th>Beschrijving</th>
+                    <th>Ernst</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var record in Model.Vehicle.DamageHistory)
+                {
+                    <tr>
+                        <td>@record.Date</td>
+                        <td>@record.Description</td>
+                        <td class="severity-@record.Severity.ToLower()">@record.Severity</td>
+                        <td><span class="badge badge-gray">@record.Status</span></td>
+                    </tr>
+                }
+                @if (Model.Vehicle.DamageHistory.Count == 0)
+                {
+                    <tr><td colspan="4" class="empty-row">Geen schade geregistreerd.</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="form-actions">
+    <a class="btn btn-outline" asp-page="Index">Annuleren</a>
+    <button class="btn btn-primary" type="button">Opslaan</button>
+</div>

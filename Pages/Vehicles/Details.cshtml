@@ -1,0 +1,41 @@
+@page "{id:int}"
+@model jj_eskolina_silver_enigma.Pages.Vehicles.DetailsModel
+@{
+    ViewData["Title"] = "Voertuig Details";
+    ViewData["Nav"] = "Vehicles";
+}
+
+<nav class="breadcrumb">
+    <a asp-page="Index">Voertuigen</a> <span>&gt;</span> <strong>@Model.Vehicle.Name</strong>
+</nav>
+
+<div class="edit-grid">
+    <div class="card">
+        <img class="vehicle-preview" src="@Model.Vehicle.ImageUrl" alt="@Model.Vehicle.Name" />
+        <div class="vehicle-title-row" style="margin-top: 16px;">
+            <h3>@Model.Vehicle.Name</h3>
+            <span class="badge @StatusHelper.CssClass(Model.Vehicle.Status)">@Model.Vehicle.Status</span>
+        </div>
+        <div class="vehicle-tags">
+            <span class="tag tag-amber">@Model.Vehicle.LicensePlate</span>
+            <span class="tag tag-gray">@Model.Vehicle.Type</span>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3 class="card-title">Voertuiggegevens</h3>
+        <div class="detail-rows">
+            <div class="detail-row"><dt>Bouwjaar</dt><dd>@Model.Vehicle.Year</dd></div>
+            <div class="detail-row"><dt>Aantal zitplaatsen</dt><dd>@Model.Vehicle.Seats</dd></div>
+            <div class="detail-row"><dt>Brandstoftype</dt><dd>@Model.Vehicle.FuelType</dd></div>
+            <div class="detail-row"><dt>Kilometerstand</dt><dd>@Model.Vehicle.Mileage.ToString("N0") km</dd></div>
+            <div class="detail-row"><dt>Laatste APK</dt><dd>@Model.Vehicle.LastInspection</dd></div>
+            <div class="detail-row"><dt>Schade</dt><dd class="@(Model.Vehicle.HasDamage ? "text-danger" : "text-success")">@Model.Vehicle.Damage</dd></div>
+        </div>
+    </div>
+</div>
+
+<div class="form-actions">
+    <a class="btn btn-outline" asp-page="Index">Terug naar overzicht</a>
+    <a class="btn btn-primary" asp-page="Edit" asp-route-id="@Model.Vehicle.Id">Bewerken</a>
+</div>

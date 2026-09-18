@@ -1,0 +1,42 @@
+@page
+@model jj_eskolina_silver_enigma.Pages.Vehicles.IndexModel
+@{
+    ViewData["Title"] = "Voertuigen";
+    ViewData["Nav"] = "Vehicles";
+}
+
+<div class="page-header">
+    <div>
+        <h2 class="section-title">Wagenpark Beheer</h2>
+        <p class="section-subtitle">Totaal @Model.Vehicles.Count actieve bussen in systeem</p>
+    </div>
+    <a class="btn btn-primary" asp-page="Create">+ Voertuig Toevoegen</a>
+</div>
+
+<div class="vehicle-grid">
+    @foreach (var vehicle in Model.Vehicles)
+    {
+        <article class="vehicle-card">
+            <img class="vehicle-image" src="@vehicle.ImageUrl" alt="@vehicle.Name" />
+            <div class="vehicle-body">
+                <div class="vehicle-title-row">
+                    <h3>@vehicle.Name</h3>
+                    <span class="badge @StatusHelper.CssClass(vehicle.Status)">@vehicle.Status</span>
+                </div>
+                <div class="vehicle-tags">
+                    <span class="tag tag-amber">@vehicle.LicensePlate</span>
+                    <span class="tag tag-gray">@vehicle.Type</span>
+                </div>
+                <dl class="detail-rows">
+                    <div class="detail-row"><dt>Kilometerstand</dt><dd>@vehicle.Mileage.ToString("N0") km</dd></div>
+                    <div class="detail-row"><dt>Laatste APK</dt><dd>@vehicle.LastInspection</dd></div>
+                    <div class="detail-row"><dt>Schade</dt><dd class="@(vehicle.HasDamage ? "text-danger" : "text-success")">@vehicle.Damage</dd></div>
+                </dl>
+                <div class="vehicle-actions">
+                    <a class="btn btn-outline" asp-page="Edit" asp-route-id="@vehicle.Id">Bewerken</a>
+                    <a class="btn btn-outline" asp-page="Details" asp-route-id="@vehicle.Id">Details</a>
+                </div>
+            </div>
+        </article>
+    }
+</div>

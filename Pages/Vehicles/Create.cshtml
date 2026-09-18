@@ -1,0 +1,61 @@
+@page
+@model jj_eskolina_silver_enigma.Pages.Vehicles.CreateModel
+@{
+    ViewData["Title"] = "Voertuig Toevoegen";
+    ViewData["Nav"] = "Vehicles";
+}
+
+<nav class="breadcrumb">
+    <a asp-page="Index">Voertuigen</a> <span>&gt;</span> <strong>Toevoegen</strong>
+</nav>
+
+<div class="card">
+    <h3 class="card-title">Voertuiggegevens</h3>
+    <div class="form-grid">
+        <div class="form-field">
+            <label>Voertuignaam</label>
+            <input type="text" placeholder="Bijv. Mercedes Sprinter 316" />
+        </div>
+        <div class="form-field">
+            <label>Kenteken</label>
+            <input type="text" placeholder="XX-123-YY" />
+        </div>
+        <div class="form-field">
+            <label>Type</label>
+            <select>
+                <option>Minibus</option>
+                <option>Stadsbus</option>
+                <option>Touringcar</option>
+            </select>
+        </div>
+        <div class="form-field">
+            <label>Bouwjaar</label>
+            <input type="text" placeholder="2024" />
+        </div>
+        <div class="form-field">
+            <label>Aantal Zitplaatsen</label>
+            <input type="text" placeholder="16+1" />
+        </div>
+        <div class="form-field">
+            <label>Brandstoftype</label>
+            <select>
+                <option>Diesel</option>
+                <option>Elektrisch</option>
+                <option>Hybride</option>
+            </select>
+        </div>
+        <div class="form-field">
+            <label>Huidige KM Stand</label>
+            <input type="text" placeholder="0 km" />
+        </div>
+        <div class="form-field">
+            <label>Laatste APK Datum</label>
+            <input type="text" placeholder="dd-mm-jjjj" />
+        </div>
+    </div>
+</div>
+
+<div class="form-actions">
+    <a class="btn btn-outline" asp-page="Index">Annuleren</a>
+    <button class="btn btn-primary" type="button">Voertuig Opslaan</button>
+</div>
