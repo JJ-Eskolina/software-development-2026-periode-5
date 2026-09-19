@@ -15,5 +15,6 @@ namespace jj_eskolina_silver_enigma.Data
         }
 
         public DbSet<Vehicle> Vehicles { get; set; }
+        public DbSet<Reservation> Reservations { get; set; }
     }
 }

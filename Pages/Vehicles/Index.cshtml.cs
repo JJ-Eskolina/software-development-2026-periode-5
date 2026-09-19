@@ -6,10 +6,17 @@ namespace jj_eskolina_silver_enigma.Pages.Vehicles;
 
 public class IndexModel : PageModel
 {
-    public List<VehicleViewModel> Vehicles { get; private set; } = [];
+    private readonly BusverhuurContext _context;
+    public IndexModel(BusverhuurContext context)
+    {
+        _context = context;
+    }
+
+    public List<Vehicle> Vehicles { get; private set; } = [];
 
     public void OnGet()
     {
-        Vehicles = MockData.Vehicles;
+        Vehicles = _context.Vehicles.ToList();
     }
 }
+    

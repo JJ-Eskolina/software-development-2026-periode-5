@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using jj_eskolina_silver_enigma.Data;
 
@@ -10,9 +11,11 @@ using jj_eskolina_silver_enigma.Data;
 namespace jj_eskolina_silver_enigma.Migrations
 {
     [DbContext(typeof(BusverhuurContext))]
-    partial class BusverhuurContextModelSnapshot : ModelSnapshot
+    [Migration("20260919073414_AddReservation")]
+    partial class AddReservation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.12");
@@ -56,25 +59,6 @@ namespace jj_eskolina_silver_enigma.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Damage")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FuelType")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("HasDamage")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("LastInspection")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("LicensePlate")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -86,10 +70,6 @@ namespace jj_eskolina_silver_enigma.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Seats")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -97,9 +77,6 @@ namespace jj_eskolina_silver_enigma.Migrations
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("Year")
-                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
