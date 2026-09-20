@@ -1,8 +1,10 @@
 using jj_eskolina_silver_enigma.Data;
 using jj_eskolina_silver_enigma.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SQLitePCL;
 
 namespace jj_eskolina_silver_enigma.Pages;
+
 
 public class IndexModel : PageModel
 {
@@ -10,14 +12,21 @@ public class IndexModel : PageModel
     public int ActiveReservations { get; private set; }
     public int VehiclesInMaintenance { get; private set; }
     public decimal OutstandingPayments { get; private set; }
-    public List<ReservationViewModel> RecentReservations { get; private set; } = [];
+    public List<Reservation> RecentReservations { get; private set; } = new List<Reservation>();
+   
+    private readonly BusverhuurContext _context;
+
+    public IndexModel(BusverhuurContext context)
+    {
+        _context = context;
+    }
 
     public void OnGet()
     {
-        VehicleCount = MockData.Vehicles.Count;
-        VehiclesInMaintenance = MockData.Vehicles.Count(v => v.Status == "In Onderhoud");
-        ActiveReservations = MockData.Reservations.Count(r => r.Status is "Bevestigd" or "In Behandeling");
-        OutstandingPayments = MockData.Reservations.Count(r => !r.IsPaid) * 1_062.50m;
-        RecentReservations = MockData.Reservations.Take(5).ToList();
+        VehicleCount = _context.Vehicles.Count();
+        VehiclesInMaintenance = _context.Vehicles.Count(v => v.Status == "In Onderhoud");
+        ActiveReservations = _context.Reservations.Count(r => r.Status == "Bevestigd" || r.Status == "In Behandeling");
+        OutstandingPayments = _context.Reservations.Count(r => !r.IsPaid) * 1_062.50m;
+        
     }
 }

@@ -11,7 +11,7 @@
             <span class="stat-label">Totaal Reserveringen</span>
             <span class="stat-icon">📄</span>
         </div>
-        <div class="stat-value">@Model.Total</div>
+        <div class="stat-value">@Model.Reservations.Count</div>
         <div class="stat-change positive">+8.2%</div>
     </div>
     <div class="stat-card">
@@ -19,7 +19,7 @@
             <span class="stat-label">Actief</span>
             <span class="stat-icon">▶</span>
         </div>
-        <div class="stat-value">@Model.Active</div>
+        <div class="stat-value">@Model.Reservations.Count(r => r.Status == "Actief")</div>
         <div class="stat-change positive">+4.3%</div>
     </div>
     <div class="stat-card">
@@ -27,7 +27,7 @@
             <span class="stat-label">Komende Week</span>
             <span class="stat-icon">📅</span>
         </div>
-        <div class="stat-value">@Model.UpcomingWeek</div>
+        <div class="stat-value">@Model.Reservations.Count(r => r.StartDate >= DateTime.Now && r.StartDate <= DateTime.Now.AddDays(7))</div>
         <div class="stat-change">Stabiel</div>
     </div>
     <div class="stat-card">
@@ -35,7 +35,7 @@
             <span class="stat-label">Openstaande Betalingen</span>
             <span class="stat-icon">💳</span>
         </div>
-        <div class="stat-value">€@Model.OutstandingPayments.ToString("N0")</div>
+        <div class="stat-value">€@Model.Reservations.Where(r => !r.IsPaid).Count().ToString("N0")</div>
         <div class="stat-change negative">-12.4%</div>
     </div>
 </div>
@@ -78,9 +78,9 @@
                 @foreach (var reservation in Model.Reservations)
                 {
                     <tr>
-                        <td><a class="link" asp-page="Details" asp-route-id="@reservation.Id">@reservation.ReservationNumber</a></td>
+                        <td><a class="link" asp-page="Details" asp-route-id="@reservation.Id">@reservation.Id</a></td>
                         <td>@reservation.CustomerName</td>
-                        <td>@reservation.VehicleName</td>
+                        <td>@(reservation.Vehicle?.Name ?? reservation.VehicleId.ToString())</td>
                         <td>@reservation.StartDate</td>
                         <td>@reservation.EndDate</td>
                         <td><span class="badge @StatusHelper.CssClass(reservation.Status)">@reservation.Status</span></td>

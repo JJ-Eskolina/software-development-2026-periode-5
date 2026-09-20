@@ -15,12 +15,12 @@ namespace jj_eskolina_silver_enigma.Models
         public int Mileage { get; set; }
 
 
-public string ImageUrl { get; set; } = string.Empty;
-public string LastInspection { get; set; } = string.Empty;
-public bool HasDamage { get; set; }
-public string Damage { get; set; } = string.Empty;
-public int Year { get; set; }
-public string Seats { get; set; } = string.Empty;
-public string FuelType { get; set; } = string.Empty;
+        public string ImageUrl { get; set; } = string.Empty;
+        public string LastInspection { get; set; } = string.Empty;
+        public bool HasDamage { get; set; }
+        public string Damage { get; set; } = string.Empty;
+        public int Year { get; set; }
+        public string Seats { get; set; } = string.Empty;
+        public string FuelType { get; set; } = string.Empty;
     }
 }
