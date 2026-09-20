@@ -1,111 +1,105 @@
 @page "{id:int}"
 @model jj_eskolina_silver_enigma.Pages.Vehicles.EditModel
 @{
-    ViewData["Title"] = "Voertuig Bewerken";
+    ViewData["Title"] = "Edit Vehicle";
     ViewData["Nav"] = "Vehicles";
 }
 
 <nav class="breadcrumb">
-    <a asp-page="Index">Voertuigen</a> <span>&gt;</span> <span>@Model.Vehicle.Name</span> <span>&gt;</span> <strong>Bewerken</strong>
+    <a asp-page="Index">Vehicle</a> <span>&gt;</span> <span>@Model.Vehicle.Name</span> <span>&gt;</span> <strong>Edit</strong>
 </nav>
 
 <div class="edit-grid">
     <div class="card">
-        <h3 class="card-title">Voertuig Afbeeldingen</h3>
+        <h3 class="card-title">Vehicle Images</h3>
         <img class="vehicle-preview" src="@Model.Vehicle.ImageUrl" alt="@Model.Vehicle.Name" />
-        <button class="btn btn-outline btn-block" type="button">⬆ Afbeelding Wijzigen</button>
+        <button class="btn btn-outline btn-block" type="button">⬆ Change Image</button>
 
-        <h4 class="gallery-title">Foto Gallerij</h4>
+        @* TODO: GalleryImages hoort bij een aparte 1-op-veel relatie (later toe te voegen). *@
+        @* <h4 class="gallery-title">Foto Gallerij</h4>
         <div class="gallery-row">
             @foreach (var image in Model.Vehicle.GalleryImages)
             {
                 <img class="gallery-thumb" src="@image" alt="Galerij foto" />
             }
-        </div>
+        </div> *@
     </div>
 
     <div class="card">
-        <h3 class="card-title">Voertuiggegevens</h3>
+        <h3 class="card-title">Vehicle Details</h3>
+        <form method="post">
+        <input type="hidden" asp-for="Vehicle.Id" />
         <div class="form-grid">
             <div class="form-field">
-                <label>Voertuignaam</label>
-                <input type="text" value="@Model.Vehicle.Name" />
+                <label>Vehicle Name</label>
+                <input asp-for="Vehicle.Name" type="text" />
             </div>
             <div class="form-field">
-                <label>Kenteken</label>
-                <input type="text" value="@Model.Vehicle.LicensePlate" />
+                <label>License Plate</label>
+                <input asp-for="Vehicle.LicensePlate" type="text" />
             </div>
             <div class="form-field">
                 <label>Type</label>
-                <select>
-                    <option selected="@(Model.Vehicle.Type == "Minibus")">Minibus</option>
-                    <option selected="@(Model.Vehicle.Type == "Stadsbus")">Stadsbus</option>
-                    <option selected="@(Model.Vehicle.Type == "Touringcar")">Touringcar</option>
+                <select asp-for="Vehicle.Type">
+                    <option>Minibus</option>
+                    <option>City Bus</option>
+                    <option>Coach</option>
                 </select>
             </div>
             <div class="form-field">
-                <label>Bouwjaar</label>
-                <input type="text" value="@Model.Vehicle.Year" />
+                <label>Year</label>
+                <input asp-for="Vehicle.Year" type="text" />
             </div>
             <div class="form-field">
-                <label>Aantal Zitplaatsen</label>
-                <input type="text" value="@Model.Vehicle.Seats" />
+                <label>Number of Seats</label>
+                <input asp-for="Vehicle.Seats" type="text" />
             </div>
             <div class="form-field">
-                <label>Brandstoftype</label>
-                <select>
-                    <option selected="@(Model.Vehicle.FuelType == "Diesel")">Diesel</option>
-                    <option selected="@(Model.Vehicle.FuelType == "Elektrisch")">Elektrisch</option>
-                    <option selected="@(Model.Vehicle.FuelType == "Hybride")">Hybride</option>
+                <label>Fuel Type</label>
+                <select asp-for="Vehicle.FuelType">
+                    <option>Diesel</option>
+                    <option>Electric</option>
+                    <option>Hybrid</option>
                 </select>
             </div>
             <div class="form-field">
-                <label>Huidige KM Stand</label>
-                <input type="text" value="@Model.Vehicle.Mileage.ToString("N0") km" />
+                <label>Current Mileage</label>
+                <input asp-for="Vehicle.Mileage" type="text" />
             </div>
             <div class="form-field">
-                <label>Laatste APK Datum</label>
-                <input type="text" value="@Model.Vehicle.LastInspection" />
+                <label>Last Inspection Date</label>
+                <input asp-for="Vehicle.LastInspection" type="text" />
             </div>
         </div>
+
+        <div class="form-actions">
+            <a class="btn btn-outline" asp-page="Index">Cancel</a>
+            <button class="btn btn-primary" type="submit">Save</button>
+        </div>
+        </form>
     </div>
 </div>
 
 <div class="card">
     <div class="card-header">
-        <h3>Schade Registratie</h3>
-        <button class="btn btn-danger-outline" type="button">+ Schade Melden</button>
+        <h3>Damage Registration</h3>
+        <button class="btn btn-danger-outline" type="button">+ Report Damage</button>
     </div>
     <div class="table-wrapper">
         <table class="data-table">
             <thead>
                 <tr>
-                    <th>Datum</th>
-                    <th>Beschrijving</th>
-                    <th>Ernst</th>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Severity</th>
                     <th>Status</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var record in Model.Vehicle.DamageHistory)
-                {
-                    <tr>
-                        <td>@record.Date</td>
-                        <td>@record.Description</td>
-                        <td class="severity-@record.Severity.ToLower()">@record.Severity</td>
-                        <td><span class="badge badge-gray">@record.Status</span></td>
-                    </tr>
-                }
-                @if (Model.Vehicle.DamageHistory.Count == 0)
-                {
-                    <tr><td colspan="4" class="empty-row">Geen schade geregistreerd.</td></tr>
-                }
+                @* TODO: DamageHistory hoort bij een aparte 1-op-veel relatie (later toe te voegen). *@
+                <tr><td colspan="4" class="empty-row">No damage registered.</td></tr>
             </tbody>
         </table>
     </div>
 </div>
 
-<div class="form-actions">
-    <a class="btn btn-outline" asp-page="Index">Annuleren</a>
-    <button class="btn btn-primary" type="button">Opslaan</button>
-</div>

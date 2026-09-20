@@ -71,7 +71,7 @@
                     <tr>
                         <td><a class="link" asp-page="/Reservations/Details" asp-route-id="@reservation.Id">@reservation.ReservationNumber</a></td>
                         <td>@reservation.CustomerName</td>
-                        <td>@reservation.VehicleName</td>
+                        <td>@reservation.Vehicle.Name</td>
                         <td>@reservation.StartDate – @reservation.EndDate</td>
                         <td><span class="badge @StatusHelper.CssClass(reservation.Status)">@reservation.Status</span></td>
                         <td>

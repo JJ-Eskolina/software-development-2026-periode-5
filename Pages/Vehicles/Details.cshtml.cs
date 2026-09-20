@@ -7,11 +7,18 @@ namespace jj_eskolina_silver_enigma.Pages.Vehicles;
 
 public class DetailsModel : PageModel
 {
-    public VehicleViewModel Vehicle { get; private set; } = new();
+    private readonly BusverhuurContext _context;
+    public Vehicle Vehicle { get; private set; } = new();
+
+    public DetailsModel(BusverhuurContext context)
+    {
+        _context = context;
+    }
+
 
     public IActionResult OnGet(int id)
     {
-        var vehicle = MockData.Vehicles.FirstOrDefault(v => v.Id == id);
+        var vehicle = _context.Vehicles.FirstOrDefault(v => v.Id == id);
         if (vehicle is null)
         {
             return NotFound();
