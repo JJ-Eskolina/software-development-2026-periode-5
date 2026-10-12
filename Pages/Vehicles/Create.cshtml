@@ -8,13 +8,14 @@
 <nav class="breadcrumb">
     <a asp-page="Index">Voertuigen</a> <span>&gt;</span> <strong>Toevoegen</strong>
 </nav>
-<form method="post">
+<form method="post" enctype="multipart/form-data">
+<div asp-validation-summary="ModelOnly" class="validation-summary-errors" role="alert"></div>
 <div class="card">
     <h3 class="card-title">Voertuiggegevens</h3>
     <div class="form-grid">
         <div class="form-field">
             <label>Voertuignaam</label>
-            <input  asp-for="NewVehicle.Name" type="text" placeholder="Bijv. Mercedes Sprinter 316" />
+            <input asp-for="NewVehicle.Name" type="text" placeholder="Bijv. Mercedes Sprinter 316" />
         </div>
         <div class="form-field">
             <label>Kenteken</label>
@@ -30,7 +31,7 @@
         </div>
         <div class="form-field">
             <label>Bouwjaar</label>
-            <input asp-for="NewVehicle.Year" type="text" placeholder="2026" />
+            <input asp-for="NewVehicle.Year" type="number" placeholder="2026" />
         </div>
         <div class="form-field">
             <label>Aantal Zitplaatsen</label>
@@ -46,11 +47,32 @@
         </div>
         <div class="form-field">
             <label>Huidige KM Stand</label>
-            <input asp-for="NewVehicle.Mileage" type="text" placeholder="0 km" />
+            <input asp-for="NewVehicle.Mileage" type="number" placeholder="0" />
         </div>
         <div class="form-field">
             <label>Laatste APK Datum</label>
             <input asp-for="NewVehicle.LastInspection" type="text" placeholder="dd-mm-jjjj" />
+        </div>
+        <div class="form-field">
+            <label asp-for="NewVehicle.Status">Status</label>
+            <select asp-for="NewVehicle.Status">
+                <option>Beschikbaar</option>
+                <option>Verhuurd</option>
+                <option>In Onderhoud</option>
+            </select>
+        </div>
+        <div class="form-field">
+            <label asp-for="NewVehicle.HasDamage">Heeft schade</label>
+            <input asp-for="NewVehicle.HasDamage" type="checkbox" />
+        </div>
+        <div class="form-field">
+            <label asp-for="NewVehicle.Damage">Schade beschrijving</label>
+            <input asp-for="NewVehicle.Damage" type="text" />
+        </div>
+        <div class="form-field">
+            <label asp-for="Images">Afbeeldingen (JPG, PNG, GIF of WebP; max. 5 MB per afbeelding)</label>
+            <input asp-for="Images" type="file" accept="image/jpeg,image/png,image/gif,image/webp" multiple />
+            <span asp-validation-for="Images" class="text-danger"></span>
         </div>
     </div>
 </div>

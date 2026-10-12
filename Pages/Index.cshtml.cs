@@ -1,7 +1,7 @@
 using jj_eskolina_silver_enigma.Data;
 using jj_eskolina_silver_enigma.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SQLitePCL;
+using Microsoft.EntityFrameworkCore;
 
 namespace jj_eskolina_silver_enigma.Pages;
 
@@ -21,12 +21,19 @@ public class IndexModel : PageModel
         _context = context;
     }
 
-    public void OnGet()
+    public async Task OnGetAsync()
     {
-        VehicleCount = _context.Vehicles.Count();
-        VehiclesInMaintenance = _context.Vehicles.Count(v => v.Status == "In Onderhoud");
-        ActiveReservations = _context.Reservations.Count(r => r.Status == "Bevestigd" || r.Status == "In Behandeling");
-        OutstandingPayments = _context.Reservations.Count(r => !r.IsPaid) * 1_062.50m;
-        
+        VehicleCount = await _context.Vehicles.CountAsync();
+        VehiclesInMaintenance = await _context.Vehicles.CountAsync(v => v.Status == "In Onderhoud");
+        ActiveReservations = await _context.Reservations.CountAsync(
+            r => r.Status == "Bevestigd" || r.Status == "In Behandeling");
+        OutstandingPayments = await _context.Reservations
+            .Where(r => !r.IsPaid)
+            .SumAsync(r => (decimal?)r.TotalAmount) ?? 0m;
+        RecentReservations = await _context.Reservations
+            .Include(r => r.Vehicle)
+            .OrderByDescending(r => r.Id)
+            .Take(5)
+            .ToListAsync();
     }
 }

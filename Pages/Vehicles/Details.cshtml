@@ -11,7 +11,18 @@
 
 <div class="edit-grid">
     <div class="card">
-        <img class="vehicle-preview" src="@Model.Vehicle.ImageUrl" alt="@Model.Vehicle.Name" />
+        @if (Model.HasStoredImage)
+        {
+            <img class="vehicle-preview" src="@Url.Page("/Vehicles/Index", "Image", new { id = Model.Vehicle.Id })" alt="@Model.Vehicle.Name" />
+        }
+        else if (!string.IsNullOrWhiteSpace(Model.Vehicle.ImageUrl))
+        {
+            <img class="vehicle-preview" src="@Model.Vehicle.ImageUrl" alt="@Model.Vehicle.Name" />
+        }
+        else
+        {
+            <div class="vehicle-preview vehicle-image-empty">Geen afbeelding</div>
+        }
         <div class="vehicle-title-row" style="margin-top: 16px;">
             <h3>@Model.Vehicle.Name</h3>
             <span class="badge @StatusHelper.CssClass(Model.Vehicle.Status)">@Model.Vehicle.Status</span>

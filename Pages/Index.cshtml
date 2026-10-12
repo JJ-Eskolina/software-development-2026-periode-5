@@ -20,7 +20,7 @@
             <span class="stat-icon">🚌</span>
         </div>
         <div class="stat-value">@Model.VehicleCount</div>
-        <div class="stat-change positive">+2 deze maand</div>
+        <div class="stat-change">Voertuigen in database</div>
     </div>
     <div class="stat-card">
         <div class="stat-card-top">
@@ -28,7 +28,7 @@
             <span class="stat-icon">▶</span>
         </div>
         <div class="stat-value">@Model.ActiveReservations</div>
-        <div class="stat-change positive">+4.3%</div>
+        <div class="stat-change">Bevestigd of in behandeling</div>
     </div>
     <div class="stat-card">
         <div class="stat-card-top">
@@ -36,7 +36,7 @@
             <span class="stat-icon">💳</span>
         </div>
         <div class="stat-value">€@Model.OutstandingPayments.ToString("N0")</div>
-        <div class="stat-change negative">-12.4%</div>
+        <div class="stat-change">Som van onbetaalde reserveringen</div>
     </div>
     <div class="stat-card">
         <div class="stat-card-top">
@@ -44,7 +44,7 @@
             <span class="stat-icon">🛠</span>
         </div>
         <div class="stat-value">@Model.VehiclesInMaintenance</div>
-        <div class="stat-change">Stabiel</div>
+        <div class="stat-change">Status: In Onderhoud</div>
     </div>
 </div>
 
@@ -71,7 +71,7 @@
                     <tr>
                         <td><a class="link" asp-page="/Reservations/Details" asp-route-id="@reservation.Id">@reservation.ReservationNumber</a></td>
                         <td>@reservation.CustomerName</td>
-                        <td>@reservation.Vehicle.Name</td>
+                        <td>@(reservation.Vehicle?.Name ?? "Voertuig verwijderd")</td>
                         <td>@reservation.StartDate – @reservation.EndDate</td>
                         <td><span class="badge @StatusHelper.CssClass(reservation.Status)">@reservation.Status</span></td>
                         <td>

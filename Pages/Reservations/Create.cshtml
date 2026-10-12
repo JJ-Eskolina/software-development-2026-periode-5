@@ -1,0 +1,84 @@
+@page
+@model jj_eskolina_silver_enigma.Pages.Reservations.CreateModel
+@{
+    ViewData["Title"] = "Reservering toevoegen";
+    ViewData["Nav"] = "Reservations";
+}
+
+<nav class="breadcrumb">
+    <a asp-page="Index">Reserveringen</a> <span>&gt;</span> <strong>Toevoegen</strong>
+</nav>
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="validation-summary-errors" role="alert"></div>
+    <div class="card">
+        <h3 class="card-title">Reserveringsgegevens</h3>
+        <div class="form-grid">
+            <div class="form-field">
+                <label asp-for="Reservation.ReservationNumber">Reserveringsnummer</label>
+                <input asp-for="Reservation.ReservationNumber" />
+                <span asp-validation-for="Reservation.ReservationNumber" class="text-danger"></span>
+            </div>
+            <div class="form-field">
+                <label asp-for="Reservation.CustomerName">Klant</label>
+                <input asp-for="Reservation.CustomerName" />
+                <span asp-validation-for="Reservation.CustomerName" class="text-danger"></span>
+            </div>
+            <div class="form-field">
+                <label asp-for="Reservation.VehicleId">Voertuig</label>
+                <select asp-for="Reservation.VehicleId" asp-items="Model.Vehicles">
+                    <option value="">-- Selecteer voertuig --</option>
+                </select>
+                <span asp-validation-for="Reservation.VehicleId" class="text-danger"></span>
+            </div>
+            <div class="form-field">
+                <label asp-for="Reservation.StartDate">Startdatum</label>
+                <input asp-for="Reservation.StartDate" type="date" />
+                <span asp-validation-for="Reservation.StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-field">
+                <label asp-for="Reservation.EndDate">Einddatum</label>
+                <input asp-for="Reservation.EndDate" type="date" />
+                <span asp-validation-for="Reservation.EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-field">
+                <label asp-for="Reservation.Status">Status</label>
+                <select asp-for="Reservation.Status">
+                    @foreach (var status in Reservation.StatusOptions)
+                    {
+                        <option value="@status">@status</option>
+                    }
+                </select>
+                <span asp-validation-for="Reservation.Status" class="text-danger"></span>
+            </div>
+            <div class="form-field">
+                <label asp-for="Reservation.TotalAmount">Totaalbedrag</label>
+                <input asp-for="Reservation.TotalAmount" type="number" min="0" step="0.01" />
+                <span asp-validation-for="Reservation.TotalAmount" class="text-danger"></span>
+            </div>
+            <div class="form-field">
+                <label asp-for="Reservation.StartMileage">Begin kilometerstand</label>
+                <input asp-for="Reservation.StartMileage" type="number" min="0" />
+                <span asp-validation-for="Reservation.StartMileage" class="text-danger"></span>
+            </div>
+            <div class="form-field">
+                <label asp-for="Reservation.EndMileage">Eind kilometerstand</label>
+                <input asp-for="Reservation.EndMileage" type="number" min="0" />
+                <span asp-validation-for="Reservation.EndMileage" class="text-danger"></span>
+            </div>
+            <div class="form-field">
+                <label asp-for="Reservation.IsPaid">Betaald</label>
+                <input asp-for="Reservation.IsPaid" type="checkbox" />
+            </div>
+        </div>
+        <div class="form-field">
+            <label asp-for="Reservation.Notes">Notities</label>
+            <textarea asp-for="Reservation.Notes" rows="3"></textarea>
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <a class="btn btn-outline" asp-page="Index">Annuleren</a>
+        <button class="btn btn-primary" type="submit">Reservering opslaan</button>
+    </div>
+</form>

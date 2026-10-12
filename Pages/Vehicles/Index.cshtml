@@ -13,11 +13,27 @@
     <a class="btn btn-primary" asp-page="Create">+ Voertuig Toevoegen</a>
 </div>
 
+@if (TempData["ErrorMessage"] is string errorMessage)
+{
+    <div class="validation-summary-errors" role="alert">@errorMessage</div>
+}
+
 <div class="vehicle-grid">
     @foreach (var vehicle in Model.Vehicles)
     {
         <article class="vehicle-card">
-            <img class="vehicle-image" src="@vehicle.ImageUrl" alt="@vehicle.Name" />
+            @if (Model.PrimaryImageIds.TryGetValue(vehicle.Id, out var imageId))
+            {
+                <img class="vehicle-image" src="@Url.Page("/Vehicles/Index", "Image", new { id = vehicle.Id, imageId })" alt="@vehicle.Name" />
+            }
+            else if (!string.IsNullOrWhiteSpace(vehicle.ImageUrl))
+            {
+                <img class="vehicle-image" src="@vehicle.ImageUrl" alt="@vehicle.Name" />
+            }
+            else
+            {
+                <div class="vehicle-image vehicle-image-empty">Geen afbeelding</div>
+            }
             <div class="vehicle-body">
                 <div class="vehicle-title-row">
                     <h3>@vehicle.Name</h3>
@@ -35,6 +51,10 @@
                 <div class="vehicle-actions">
                     <a class="btn btn-outline" asp-page="Edit" asp-route-id="@vehicle.Id">Bewerken</a>
                     <a class="btn btn-outline" asp-page="Details" asp-route-id="@vehicle.Id">Details</a>
+                    <form method="post" asp-page-handler="Delete" asp-route-id="@vehicle.Id"
+                          onsubmit="return confirm('Weet je zeker dat je dit voertuig wilt verwijderen?');">
+                        <button class="btn btn-danger-outline" type="submit">Verwijderen</button>
+                    </form>
                 </div>
             </div>
         </article>

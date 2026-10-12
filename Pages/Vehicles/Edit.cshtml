@@ -12,23 +12,49 @@
 <div class="edit-grid">
     <div class="card">
         <h3 class="card-title">Vehicle Images</h3>
-        <img class="vehicle-preview" src="@Model.Vehicle.ImageUrl" alt="@Model.Vehicle.Name" />
-        <button class="btn btn-outline btn-block" type="button">⬆ Change Image</button>
+        @if (Model.Images.FirstOrDefault() is { } primaryImage)
+        {
+            <img class="vehicle-preview" src="@Url.Page("/Vehicles/Index", "Image", new { id = Model.Vehicle.Id, imageId = primaryImage.Id })" alt="@Model.Vehicle.Name" />
+        }
+        else if (!string.IsNullOrWhiteSpace(Model.Vehicle.ImageUrl))
+        {
+            <img class="vehicle-preview" src="@Model.Vehicle.ImageUrl" alt="@Model.Vehicle.Name" />
+        }
+        else
+        {
+            <div class="vehicle-preview vehicle-image-empty">Geen afbeelding</div>
+        }
 
-        @* TODO: GalleryImages hoort bij een aparte 1-op-veel relatie (later toe te voegen). *@
-        @* <h4 class="gallery-title">Foto Gallerij</h4>
+        <h4 class="gallery-title">Afbeeldingen uit SQLite</h4>
+        <form method="post" asp-page-handler="UploadImages" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="validation-summary-errors" role="alert"></div>
+            <div class="form-field">
+                <label asp-for="UploadedImages">Kies afbeeldingen (JPG, PNG, GIF of WebP; max. 5 MB per afbeelding)</label>
+                <input asp-for="UploadedImages" type="file" accept="image/jpeg,image/png,image/gif,image/webp" multiple />
+                <span asp-validation-for="UploadedImages" class="text-danger"></span>
+            </div>
+            <button class="btn btn-outline btn-block" type="submit">Afbeeldingen uploaden</button>
+        </form>
         <div class="gallery-row">
-            @foreach (var image in Model.Vehicle.GalleryImages)
+            @foreach (var image in Model.Images)
             {
-                <img class="gallery-thumb" src="@image" alt="Galerij foto" />
+                <div class="gallery-image">
+                    <img class="gallery-thumb" src="@Url.Page("/Vehicles/Index", "Image", new { id = Model.Vehicle.Id, imageId = image.Id })" alt="@image.FileName" />
+                    <span>@image.FileName</span>
+                    <form method="post" asp-page-handler="DeleteImage" asp-route-imageId="@image.Id"
+                          onsubmit="return confirm('Deze afbeelding verwijderen?');">
+                        <button class="btn btn-danger-outline btn-sm" type="submit">Verwijderen</button>
+                    </form>
+                </div>
             }
-        </div> *@
+        </div>
     </div>
 
     <div class="card">
         <h3 class="card-title">Vehicle Details</h3>
         <form method="post">
         <input type="hidden" asp-for="Vehicle.Id" />
+        <div asp-validation-summary="ModelOnly" class="validation-summary-errors" role="alert"></div>
         <div class="form-grid">
             <div class="form-field">
                 <label>Vehicle Name</label>
@@ -70,6 +96,22 @@
                 <label>Last Inspection Date</label>
                 <input asp-for="Vehicle.LastInspection" type="text" />
             </div>
+            <div class="form-field">
+                <label asp-for="Vehicle.Status">Status</label>
+                <select asp-for="Vehicle.Status">
+                    <option>Beschikbaar</option>
+                    <option>Verhuurd</option>
+                    <option>In Onderhoud</option>
+                </select>
+            </div>
+            <div class="form-field">
+                <label asp-for="Vehicle.HasDamage">Heeft schade</label>
+                <input asp-for="Vehicle.HasDamage" type="checkbox" />
+            </div>
+            <div class="form-field">
+                <label asp-for="Vehicle.Damage">Schade beschrijving</label>
+                <input asp-for="Vehicle.Damage" type="text" />
+            </div>
         </div>
 
         <div class="form-actions">
@@ -102,4 +144,3 @@
         </table>
     </div>
 </div>
-

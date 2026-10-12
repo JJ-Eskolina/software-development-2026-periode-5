@@ -25,19 +25,38 @@ namespace jj_eskolina_silver_enigma.Migrations
 
                     b.Property<string>("CustomerName")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("EndMileage")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("IsPaid")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ReservationNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("StartMileage")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Status")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("TotalAmount")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("VehicleId")
@@ -57,7 +76,6 @@ namespace jj_eskolina_silver_enigma.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Damage")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("FuelType")
@@ -77,6 +95,7 @@ namespace jj_eskolina_silver_enigma.Migrations
 
                     b.Property<string>("LicensePlate")
                         .IsRequired()
+                        .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Mileage")
@@ -84,6 +103,7 @@ namespace jj_eskolina_silver_enigma.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Seats")
@@ -106,6 +126,39 @@ namespace jj_eskolina_silver_enigma.Migrations
                     b.ToTable("Vehicles");
                 });
 
+            modelBuilder.Entity("jj_eskolina_silver_enigma.Models.VehicleImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ContentType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<byte[]>("Data")
+                        .IsRequired()
+                        .HasColumnType("BLOB");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UploadedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("VehicleId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VehicleId");
+
+                    b.ToTable("VehicleImages");
+                });
+
             modelBuilder.Entity("jj_eskolina_silver_enigma.Models.Reservation", b =>
                 {
                     b.HasOne("jj_eskolina_silver_enigma.Models.Vehicle", "Vehicle")
@@ -115,6 +168,22 @@ namespace jj_eskolina_silver_enigma.Migrations
                         .IsRequired();
 
                     b.Navigation("Vehicle");
+                });
+
+            modelBuilder.Entity("jj_eskolina_silver_enigma.Models.VehicleImage", b =>
+                {
+                    b.HasOne("jj_eskolina_silver_enigma.Models.Vehicle", "Vehicle")
+                        .WithMany("Images")
+                        .HasForeignKey("VehicleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Vehicle");
+                });
+
+            modelBuilder.Entity("jj_eskolina_silver_enigma.Models.Vehicle", b =>
+                {
+                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }

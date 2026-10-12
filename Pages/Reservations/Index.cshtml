@@ -5,6 +5,14 @@
     ViewData["Nav"] = "Reservations";
 }
 
+<div class="page-header">
+    <div>
+        <h2 class="section-title">Reserveringen</h2>
+        <p class="section-subtitle">Beheer de reserveringen en betaalstatus.</p>
+    </div>
+    <a class="btn btn-primary" asp-page="Create">+ Reservering toevoegen</a>
+</div>
+
 <div class="stat-grid stat-grid-4">
     <div class="stat-card">
         <div class="stat-card-top">
@@ -19,7 +27,7 @@
             <span class="stat-label">Actief</span>
             <span class="stat-icon">▶</span>
         </div>
-        <div class="stat-value">@Model.Reservations.Count(r => r.Status == "Actief")</div>
+        <div class="stat-value">@Model.Reservations.Count(r => r.Status == "Bevestigd" || r.Status == "In Behandeling")</div>
         <div class="stat-change positive">+4.3%</div>
     </div>
     <div class="stat-card">
@@ -35,27 +43,8 @@
             <span class="stat-label">Openstaande Betalingen</span>
             <span class="stat-icon">💳</span>
         </div>
-        <div class="stat-value">€@Model.Reservations.Where(r => !r.IsPaid).Count().ToString("N0")</div>
-        <div class="stat-change negative">-12.4%</div>
-    </div>
-</div>
-
-<div class="filter-row">
-    <select class="filter-select">
-        <option>Status: Alle</option>
-        <option>Bevestigd</option>
-        <option>In Behandeling</option>
-        <option>Afgerond</option>
-        <option>Geannuleerd</option>
-    </select>
-    <select class="filter-select">
-        <option>Datum bereik</option>
-        <option>Deze week</option>
-        <option>Deze maand</option>
-    </select>
-    <div class="search-box filter-search">
-        <span class="search-icon">🔍</span>
-        <input type="search" placeholder="Klant of bus zoeken..." />
+        <div class="stat-value">€@Model.OutstandingPayments.ToString("N2")</div>
+        <div class="stat-change">Totaal onbetaalde bedragen</div>
     </div>
 </div>
 
@@ -78,7 +67,7 @@
                 @foreach (var reservation in Model.Reservations)
                 {
                     <tr>
-                        <td><a class="link" asp-page="Details" asp-route-id="@reservation.Id">@reservation.Id</a></td>
+                        <td><a class="link" asp-page="Details" asp-route-id="@reservation.Id">@reservation.ReservationNumber</a></td>
                         <td>@reservation.CustomerName</td>
                         <td>@(reservation.Vehicle?.Name ?? reservation.VehicleId.ToString())</td>
                         <td>@reservation.StartDate</td>
@@ -97,6 +86,10 @@
                         <td class="actions-cell">
                             <a class="btn btn-outline btn-sm" asp-page="Details" asp-route-id="@reservation.Id">Bekijken</a>
                             <a class="btn btn-primary btn-sm" asp-page="Details" asp-route-id="@reservation.Id">Bewerken</a>
+                            <form method="post" asp-page-handler="Delete" asp-route-id="@reservation.Id"
+                                  onsubmit="return confirm('Weet je zeker dat je deze reservering wilt verwijderen?');">
+                                <button class="btn btn-danger-outline btn-sm" type="submit">Verwijderen</button>
+                            </form>
                         </td>
                     </tr>
                 }
